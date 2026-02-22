@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F&G Seguro Garantia & Bordim e Zanolla</title>
+    <style>
+        :root {
+            /* CORES PRINCIPAIS */
+            --primary-color: #243444; /* Azul Marinho Escuro */
+            --accent-color: #f1caa3;  /* Pêssego / Dourado Suave */
+            
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #243444;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #0f766e;
+            --radius: 12px;
+            --shadow: 0 10px 15px -3px rgba(36, 52, 68, 0.1), 0 4px 6px -2px rgba(36, 52, 68, 0.05);
+            
+            /* Variação para 30 meses */
+            --accent-30m: #e0b07e; 
+            
+            /* Cor específica para o cartão do Seguro */
+            --insurance-primary: #1e3a52;
+            --insurance-link: #2563eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* --- TÍTULO PRINCIPAL DA PÁGINA --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+        
+        .page-header h1 span {
+            color: var(--accent-color);
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Container Principal que segura as duas colunas */
+        .main-wrapper {
+            display: flex;
+            gap: 30px;
+            max-width: 1100px;
+            width: 100%;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Estilo comum para os cartões grandes */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Configuração das colunas */
+        .col-left {
+            flex: 1;
+            min-width: 320px;
+            max-width: 550px;
+        }
+
+        .col-right {
+            flex: 1;
+            min-width: 320px;
+            max-width: 550px;
+        }
+
+        /* Cabeçalhos Internos */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 24px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        header.header-30m {
+            background-color: #1a2633;
+        }
+
+        header.insurance-header {
+            background-color: var(--insurance-primary);
+        }
+
+        header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+        
+        header h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Conteúdo do Formulário (Calculadora) */
+        .form-content {
+            padding: 32px 24px;
+        }
+
+        /* Seletor de Planos */
+        .plan-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .plan-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .plan-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .plan-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fff;
+            height: 100%;
+            text-align: center;
+        }
+
+        .plan-card strong {
+            display: block;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .plan-card .plan-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        .plan-option input:checked + .plan-card {
+            border-color: var(--primary-color);
+            background-color: #f0f4f8;
+            box-shadow: 0 0 0 1px var(--primary-color);
+        }
+        
+        .plan-option input:checked + .plan-card strong {
+            color: var(--primary-color);
+        }
+
+        .plan-option input[value="30"]:checked + .plan-card {
+            border-color: var(--accent-30m);
+            background-color: #fdf6eb;
+            box-shadow: 0 0 0 1px var(--accent-30m);
+        }
+        .plan-option input[value="30"]:checked + .plan-card strong {
+            color: var(--accent-30m);
+        }
+
+        /* Inputs */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            -moz-appearance: textfield;
+            color: var(--text-main);
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(36, 52, 68, 0.1);
+        }
+
+        .helper-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Resultado */
+        .result-section {
+            background-color: #fcfcfc;
+            border-top: 1px solid var(--border-color);
+            padding: 24px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .result-row.total {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border-color);
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .final-value {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 800;
+            transition: color 0.3s ease;
+            display: block;
+        }
+
+        .installment-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            display: block;
+            text-align: right;
+            font-weight: normal;
+        }
+
+        .setup-badge {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #5c3a1e; 
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        /* Seção de Informações de Pagamento */
+        .payment-info {
+            margin-top: 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 16px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .payment-method:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .payment-icon {
+            font-size: 1.2rem;
+            margin-right: 12px;
+            margin-top: 2px;
+            color: var(--primary-color);
+        }
+
+        .payment-details h4 {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .payment-details p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .highlight-value {
+            color: var(--accent-color);
+            font-weight: 800;
+            text-shadow: 0px 0px 1px rgba(0,0,0,0.1);
+        }
+
+        /* BOTÕES DE AÇÃO */
+        .cta-container {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-cta {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px rgba(36, 52, 68, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #1a2633;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(36, 52, 68, 0.3);
+        }
+
+        /* --- ESTILOS DO SEGURO (Coluna Direita) --- */
+        .insurance-content {
+            padding: 32px 24px;
+        }
+
+        .insurance-intro {
+            background-color: #f0f4f8;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .insurance-intro p {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .insurance-section-title {
+            font-size: 1rem;
+            color: var(--insurance-primary);
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insurance-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .insurance-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .insurance-list li::before {
+            content: '🛡️';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 1rem;
+        }
+
+        .assist-box {
+            background-color: #fff8f0;
+            border: 1px solid #fae1c5;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .assist-title {
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .assist-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .payment-method-insurance {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        /* Link Estilo */
+        .insurance-link {
+            color: var(--insurance-link);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed var(--insurance-link);
+        }
+        .insurance-link:hover {
+            color: #1d4ed8;
+            border-bottom-style: solid;
+        }
+
+        /* Seção O que está incluído */
+        .coverage-section {
+            padding: 24px;
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .coverage-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .coverage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .coverage-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .coverage-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #fcf5ef;
+            color: #d49663;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .coverage-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .rules-section {
+            background-color: #f8fafc;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 20px;
+        }
+
+        .rule-item {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+
+        .rule-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .rule-icon {
+            color: var(--accent-color);
+            margin-right: 10px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .rule-content {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        .rule-content strong {
+            color: var(--primary-color);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        .toast.show { opacity: 1; }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .main-wrapper {
+                flex-direction: column;
+            }
+            .col-left, .col-right {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .page-header h1 { font-size: 1.6rem; }
+            header { padding: 20px; }
+            .form-content, .result-section, .coverage-section, .insurance-content { padding: 20px; }
+            .final-value { font-size: 1.3rem; }
+            .plan-card { padding: 12px 8px; }
+            .plan-desc { font-size: 0.7rem; }
+            .coverage-grid { gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NOVO TÍTULO DA PÁGINA -->
+    <div class="page-header">
+        <h1>F&G Seguro Garantia & <span>Bordim e Zanolla</span></h1>
+        <p>Soluções completas em proteção imobiliária</p>
+    </div>
+
+    <div class="main-wrapper">
+        
+        <!-- COLUNA ESQUERDA: Calculadora -->
+        <div class="col-left">
+            <div class="card">
+                <header id="mainHeader">
+                    <h2>Garantia Locatícia Fiantec</h2>
+                </header>
+
+                <main class="form-content">
+                    <form id="calculatorForm" onsubmit="event.preventDefault();">
+                        
+                        <div class="plan-selector">
+                            <label class="plan-option">
+                                <input type="radio" name="planType" value="12" checked onchange="updatePlan()">
+                                <div class="plan-card">
+                                    <strong>12 Meses</strong>
+                                    <div class="plan-desc">
+                                        Contrato garantido até 12 meses.<br>
+                                        (É necessário renovar a cada 12 meses)
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="plan-option">
+                                <input type="radio" name="planType" value="30" onchange="updatePlan()">
+                                <div class="plan-card">
+                                    <strong>30 Meses</strong>
+                                    <div class="plan-desc">
+                                        Contrato garantido até 30 meses.<br>
+                                        (Não precisa renovar a cada 12 meses)
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="rentValue">Valor do Aluguel</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">R$</span>
+                                <input type="number" id="rentValue" placeholder="0,00" min="0" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="extraValue">Condomínio / IPTU <span style="font-weight: 400; font-size: 0.8em; color: #6b7280;">(Opcional)</span></label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">R$</span>
+                                <input type="number" id="extraValue" placeholder="0,00" min="0" step="0.01">
+                            </div>
+                            <div class="helper-text">Deixe em branco ou 0 se não houver.</div>
+                        </div>
+
+                    </form>
+                </main>
+
+                <section class="result-section">
+                    <div class="result-row">
+                        <span>Valor do Aluguel</span>
+                        <span id="displayRent">R$ 0,00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Condomínio/IPTU</span>
+                        <span id="displayExtra">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="result-row">
+                        <span>Setup (Taxa de Cadastro)</span>
+                        <span>R$ 250,00 <span class="setup-badge">Fixo</span></span>
+                    </div>
+                    
+                    <div class="result-row total">
+                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                            <span class="final-value" id="displayTotal">R$ 0,00</span>
+                            <span class="installment-info" id="displayInstallment">ou em até 12x de R$ 0,00</span>
+                        </div>
+                    </div>
+
+                    <div class="cta-container">
+                        <a href="https://tinyurl.com/FeGImobiliarias" target="_blank" class="btn-cta btn-primary">
+                            Enviar informações para F&G
+                        </a>
+                    </div>
+
+                    <div class="payment-info">
+                        <div class="payment-method">
+                            <div class="payment-icon">💳</div>
+                            <div class="payment-details">
+                                <h4>Cartão de Crédito</h4>
+                                <p>Valor final sem juros em até 12x de <span class="highlight-value" id="creditCardInstallment">R$ 0,00</span>.</p>
+                            </div>
+                        </div>
+                        <div class="payment-method">
+                            <div class="payment-icon">📄</div>
+                            <div class="payment-details">
+                                <h4>Boleto Bancário</h4>
+                                <p>
+                                    1ª Parcela: <span class="highlight-value" id="boletoFirst">R$ 0,00</span><br>
+                                    Demais: <span class="highlight-value" id="boletoOthers">R$ 0,00</span>/mês
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="coverage-section">
+                    <h3 class="coverage-title">O que está incluído na garantia?</h3>
+                    
+                    <div class="coverage-grid">
+                        <div class="coverage-item">
+                            <div class="coverage-icon">🏠</div>
+                            <span class="coverage-text">Aluguéis atrasados</span>
+                        </div>
+                        <div class="coverage-item">
+                            <div class="coverage-icon">🏢</div>
+                            <span class="coverage-text">Condomínio e IPTU</span>
+                        </div>
+                        <div class="coverage-item">
+                            <div class="coverage-icon">⚖️</div>
+                            <span class="coverage-text">Multas contratuais</span>
+                        </div>
+                        <div class="coverage-item">
+                            <div class="coverage-icon">💧</div>
+                            <span class="coverage-text">Água e Luz</span>
+                        </div>
+                        <div class="coverage-item" style="grid-column: span 2;">
+                            <div class="coverage-icon">🚫</div>
+                            <span class="coverage-text">Despejo com assessoria jurídica</span>
+                        </div>
+                    </div>
+
+                    <div class="rules-section">
+                        <div class="rule-item">
+                            <div class="rule-icon">⏱️</div>
+                            <div class="rule-content">
+                                <strong>Aluguéis Atrasados:</strong> Reembolsado em até <strong>10 dias sem juros</strong> ou até <strong>30 dias com juros e multa</strong>.
+                            </div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-icon">📑</div>
+                            <div class="rule-content">
+                                <strong>Outras Despesas:</strong> Multas, condomínio, IPTU e contas serão reembolsadas após negociação extrajudicial ou judicial.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA: Seguro Tokio Marine -->
+        <div class="col-right">
+            <div class="card">
+                <header class="insurance-header">
+                    <h2>Seguro Residencial</h2>
+                    <h3>Tokio Marine</h3>
+                </header>
+
+                <div class="insurance-content">
+                    
+                    <div class="insurance-intro">
+                        <p>Proteção completa para o seu imóvel e tranquilidade para o seu dia a dia com assistência 24h.</p>
+                    </div>
+
+                    <div class="insurance-section-title">
+                        <span>🔥</span> Cobertura Básica
+                    </div>
+                    <ul class="insurance-list">
+                        <li>Proteção contra incêndio</li>
+                        <li>Queda de raio</li>
+                        <li>Explosão</li>
+                        <li>Fumaça</li>
+                        <li>Queda de aeronaves</li>
+                    </ul>
+
+                    <div class="insurance-section-title">
+                        <span>🛠️</span> Assistência 24 Horas
+                    </div>
+                    <div class="assist-box">
+                        <div class="assist-title">Serviços Incluídos sem custo adicional</div>
+                        <p class="assist-text">
+                            Na contratação do seguro, você terá acesso a uma equipe de profissionais capacitados prontos para ajudar:
+                        </p>
+                        <p class="assist-text">
+                            🔑 <strong>Chaveiro</strong><br>
+                            🔧 <strong>Encanador</strong><br>
+                            ⚡ <strong>Eletricista</strong><br>
+                            ❄️ <strong>Reparo de eletrodomésticos</strong> (Geladeira, Fogão, Máquina de Lavar)
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <a href="https://cdnpub.tokiomarine.com.br/portal_static/publico/site-institucional/pdf/assistencia-24h-site.pdf" target="_blank" class="insurance-link">
+                                Ver detalhes completos das assistências Tokio
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="payment-method-insurance">
+                        <div class="insurance-section-title" style="margin-bottom: 12px;">
+                            <span>💳</span> Forma de Pagamento
+                        </div>
+                        <ul class="insurance-list" style="margin-bottom: 0;">
+                            <li>
+                                <strong>Cartão de Crédito em até 12x</strong><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">O pagamento não compromete o limite do seu cartão de crédito</span>
+                            </li>
+                            <li>
+                                <strong>Boleto Bancário</strong><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Em até 4x sem juros ou 12x com juros</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast">Por favor, insira um valor de aluguel válido.</div>
+
+    <script>
+        const SETUP_FEE = 250.00;
+        const PLAN_RATES = {
+            '12': 0.20,
+            '30': 1.40
+        };
+
+        const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        });
+
+        const rentInput = document.getElementById('rentValue');
+        const extraInput = document.getElementById('extraValue');
+        const displayRent = document.getElementById('displayRent');
+        const displayExtra = document.getElementById('displayExtra');
+        const displayTotal = document.getElementById('displayTotal');
+        const displayInstallment = document.getElementById('displayInstallment');
+        
+        const creditCardInstallment = document.getElementById('creditCardInstallment');
+        const boletoFirst = document.getElementById('boletoFirst');
+        const boletoOthers = document.getElementById('boletoOthers');
+
+        const mainHeader = document.getElementById('mainHeader');
+        const toast = document.getElementById('toast');
+
+        function updatePlan() {
+            const selectedPlan = document.querySelector('input[name="planType"]:checked').value;
+            
+            if (selectedPlan === '30') {
+                mainHeader.classList.add('header-30m');
+                displayTotal.style.color = 'var(--accent-30m)';
+            } else {
+                mainHeader.classList.remove('header-30m');
+                displayTotal.style.color = 'var(--primary-color)';
+            }
+
+            calculateValues();
+        }
+
+        function calculateValues() {
+            const rent = parseFloat(rentInput.value) || 0;
+            const extra = parseFloat(extraInput.value) || 0;
+            const selectedPlan = document.querySelector('input[name="planType"]:checked').value;
+            const rate = PLAN_RATES[selectedPlan];
+
+            if (rent < 0 || extra < 0) {
+                showToast("Valores não podem ser negativos.");
+                resetDisplays();
+                return;
+            }
+
+            const baseValue = rent + extra;
+            const feeValue = baseValue * rate; 
+            const totalCost = baseValue + feeValue + SETUP_FEE;
+            const installmentValue = totalCost / 12;
+
+            displayRent.textContent = currencyFormatter.format(rent);
+            displayExtra.textContent = currencyFormatter.format(extra);
+            displayTotal.textContent = currencyFormatter.format(totalCost);
+            displayInstallment.textContent = `ou em até 12x de ${currencyFormatter.format(installmentValue)}`;
+
+            creditCardInstallment.textContent = currencyFormatter.format(installmentValue);
+
+            const amountToFinanced = totalCost - SETUP_FEE;
+            const boletoMonthlyInstallment = amountToFinanced / 12; 
+            const boletoFirstPayment = SETUP_FEE + boletoMonthlyInstallment;
+
+            boletoFirst.textContent = currencyFormatter.format(boletoFirstPayment);
+            boletoOthers.textContent = currencyFormatter.format(boletoMonthlyInstallment);
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function resetDisplays() {
+            displayRent.textContent = currencyFormatter.format(0);
+            displayExtra.textContent = currencyFormatter.format(0);
+            displayTotal.textContent = currencyFormatter.format(SETUP_FEE);
+            displayInstallment.textContent = `ou em até 12x de ${currencyFormatter.format(SETUP_FEE / 12)}`;
+            
+            const baseReset = SETUP_FEE / 12;
+            creditCardInstallment.textContent = currencyFormatter.format(baseReset);
+            boletoFirst.textContent = currencyFormatter.format(SETUP_FEE);
+            boletoOthers.textContent = currencyFormatter.format(0);
+        }
+
+        rentInput.addEventListener('input', calculateValues);
+        extraInput.addEventListener('input', calculateValues);
+
+        updatePlan();
+    </script>
+</body>
+</html>
